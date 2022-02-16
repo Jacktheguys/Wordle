@@ -1,3 +1,10 @@
+# To=Do
+# Add change word time in info
+# Change colours of letters
+# Add words to word list
+
+
+
 import discord
 from discord.client import Client
 from discord.ext import commands, tasks
@@ -12,6 +19,7 @@ client = commands.Bot(command_prefix=commands.when_mentioned_or("!"), case_insen
 
 filename = 'main.json'
 filename2= 'users.json'
+discord_token = 'insert token here'
 
 @client.event
 async def on_ready():
@@ -92,10 +100,7 @@ async def emotes(guess):
             word = word + ("<:regional_indicator_y:943333399286911058>")
         if i == "z":
             word = word + ("<:regional_indicator_z:943333399286911058>")
-
-    print(word)
     return(word)
-
 
 @tasks.loop(seconds=60)
 async def check_time():
@@ -106,7 +111,6 @@ async def check_time():
         data["word"] = word
         data["time"] = time.time()
 
-        
         with open(filename, "w") as file:
             json.dump(data,file, indent=2)
 
@@ -115,7 +119,6 @@ async def check_time():
     else:
         print("not time")
         
-
 @client.command()
 async def guess(ctx, word=None):
     if str(ctx.author.id) not in data2:
@@ -144,101 +147,56 @@ async def guess(ctx, word=None):
                     elif data2[f'{ctx.author.id}']["guess5"] == None:
                         data2[f'{ctx.author.id}']["guess5"] = word
                     
-
+                    guess1 = data2[f'{ctx.author.id}']["guess1"]
+                    guess2 = data2[f'{ctx.author.id}']["guess2"]
+                    guess3 = data2[f'{ctx.author.id}']["guess3"]
+                    guess4 = data2[f'{ctx.author.id}']["guess4"]
+                    guess5 = data2[f'{ctx.author.id}']["guess5"]
+                    square = "<:black_large_square:943336927367684167>"
 
                     if word == data["word"]:
                         await ctx.reply("You got the word!")
                         data2[f'{ctx.author.id}']["correctguesses"] += 1
                         data2[f'{ctx.author.id}']["completed"] = True
-
-                        guess1 = data2[f'{ctx.author.id}']["guess1"]
-                        guess2 = data2[f'{ctx.author.id}']["guess2"]
-                        guess3 = data2[f'{ctx.author.id}']["guess3"]
-                        guess4 = data2[f'{ctx.author.id}']["guess4"]
-                        guess5 = data2[f'{ctx.author.id}']["guess5"]
-                        square = "<:black_large_square:943336927367684167>"
-                        if guess1 != None:
-                            word1 = await emotes(guess1)
-                        else:
-                            word1 = square + square + square + square + square
-
-                        if guess2 != None:
-                            word2 = await emotes(guess2)
-                        else:
-                            word2 = square + square + square + square + square
-
-                        if guess3 != None:
-                            word3 = await emotes(guess3)
-                        else:
-                            word3 = square + square + square + square + square
-
-                        if guess4 != None:
-                            word4 = await emotes(guess4)
-                        else:
-                            word4 = square + square + square + square + square
-
-                        if guess5 != None:
-                            word5 = await emotes(guess5)
-                        else:
-                            word5 = square + square + square + square + square
-
-
-
-                        embedVar = discord.Embed(title="Wordle | Info", description=f"Your Guesses; \n{word1}\n{word2}\n{word3}\n{word4}\n{word5}", color=0xfbff00, timestamp=ctx.message.created_at)
-                        embedVar.set_footer(text=f"Wordle")
-                        embedVar.set_thumbnail(url=ctx.author.avatar_url)       
-                        await ctx.send(embed=embedVar)
-
-
-
-
+                        
                     else:
                         await ctx.reply("Your guess is incorrect!")
                         if data2[f'{ctx.author.id}']["guess5"] != None:
                             data2[f'{ctx.author.id}']["incorrectguesses"] += 1
                             data2[f'{ctx.author.id}']["completed"] = True
 
-                        guess1 = data2[f'{ctx.author.id}']["guess1"]
-                        guess2 = data2[f'{ctx.author.id}']["guess2"]
-                        guess3 = data2[f'{ctx.author.id}']["guess3"]
-                        guess4 = data2[f'{ctx.author.id}']["guess4"]
-                        guess5 = data2[f'{ctx.author.id}']["guess5"]
-                        square = "<:black_large_square:943336927367684167>"
-                        if guess1 != None:
-                            word1 = await emotes(guess1)
-                        else:
-                            word1 = square + square + square + square + square
+                    if guess1 != None:
+                        word1 = await emotes(guess1)
+                    else:
+                        word1 = square + square + square + square + square
 
-                        if guess2 != None:
-                            word2 = await emotes(guess2)
-                        else:
-                            word2 = square + square + square + square + square
+                    if guess2 != None:
+                        word2 = await emotes(guess2)
+                    else:
+                        word2 = square + square + square + square + square
 
-                        if guess3 != None:
-                            word3 = await emotes(guess3)
-                        else:
-                            word3 = square + square + square + square + square
+                    if guess3 != None:
+                        word3 = await emotes(guess3)
+                    else:
+                        word3 = square + square + square + square + square
 
-                        if guess4 != None:
-                            word4 = await emotes(guess4)
-                        else:
-                            word4 = square + square + square + square + square
+                    if guess4 != None:
+                        word4 = await emotes(guess4)
+                    else:
+                        word4 = square + square + square + square + square
 
-                        if guess5 != None:
-                            word5 = await emotes(guess5)
-                        else:
-                            word5 = square + square + square + square + square
+                    if guess5 != None:
+                        word5 = await emotes(guess5)
+                    else:
+                        word5 = square + square + square + square + square
 
-
-
-                        embedVar = discord.Embed(title="Wordle | Info", description=f"Your Guesses; \n{word1}\n{word2}\n{word3}\n{word4}\n{word5}", color=0xfbff00, timestamp=ctx.message.created_at)
-                        embedVar.set_footer(text=f"Wordle")
-                        embedVar.set_thumbnail(url=ctx.author.avatar_url)       
-                        await ctx.send(embed=embedVar)
+                    embedVar = discord.Embed(title="Wordle | Info", description=f"Your Guesses; \n{word1}\n{word2}\n{word3}\n{word4}\n{word5}", color=0xfbff00, timestamp=ctx.message.created_at)
+                    embedVar.set_footer(text=f"Wordle")
+                    embedVar.set_thumbnail(url=ctx.author.avatar_url)       
+                    await ctx.send(embed=embedVar)
                     with open(filename2, "w") as file:
                         json.dump(data2,file, indent=2)
         
-
             else:
                 await ctx.reply("That word is not in the word list!")
         else:
@@ -250,8 +208,6 @@ async def guess(ctx, word=None):
 async def info(ctx):
     if str(ctx.author.id) not in data2:
         await create_profile(ctx)
-    
-
     guess1 = data2[f'{ctx.author.id}']["guess1"]
     guess2 = data2[f'{ctx.author.id}']["guess2"]
     guess3 = data2[f'{ctx.author.id}']["guess3"]
@@ -301,9 +257,7 @@ async def help(ctx):
     embedVar.set_thumbnail(url=ctx.author.avatar_url)       
     await ctx.send(embed=embedVar)
 
-
-
 loop = asyncio.get_event_loop()
 loop.set_debug(True)
-loop.create_task(client.start("OTQzMzE3NDkzNTAwNDk3OTUz.YgxS4A.qdYYfgPx8MROKDdsLVkOgQFHnnc"))
+loop.create_task(client.start(discord_token))
 loop.run_forever()
